@@ -1,0 +1,28 @@
+{
+    "$schema": "https://biomejs.dev/schemas/latest/schema.json",
+    "formatter": {
+        "indentStyle": "space", // default is `tab`
+        "indentWidth": 4
+    },
+    "javascript": {
+        "formatter": {
+            "trailingCommas": "es5"
+        }
+    },
+    "html": {
+        "formatter": {
+            "enabled": true
+        }
+    },
+    "files": {
+        "includes": [
+            "**",
+            "!**/*.svelte",
+            "!node_modules",
+            "!dist",
+            "!build",
+            "!.svelte-kit",
+            "!src-tauri"
+        ]
+    }
+}
