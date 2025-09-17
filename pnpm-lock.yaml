@@ -11,12 +11,18 @@ importers:
       '@tauri-apps/api':
         specifier: ^2
         version: 2.7.0
+      '@tauri-apps/plugin-dialog':
+        specifier: ~2.4.0
+        version: 2.4.0
       '@tauri-apps/plugin-opener':
         specifier: ^2
         version: 2.4.0
       tauri-csv-explorer:
         specifier: 'link:'
         version: 'link:'
+      wx-svelte-grid:
+        specifier: ^2.2.0
+        version: 2.2.0
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.2.0
@@ -422,6 +428,9 @@ packages:
   '@tauri-apps/api@2.7.0':
     resolution: {integrity: sha512-v7fVE8jqBl8xJFOcBafDzXFc8FnicoH3j8o8DNNs0tHuEBmXUDqrCOAzMRX0UkfpwqZLqvrvK0GNQ45DfnoVDg==}
 
+  '@tauri-apps/api@2.8.0':
+    resolution: {integrity: sha512-ga7zdhbS2GXOMTIZRT0mYjKJtR9fivsXzsyq5U3vjDL0s6DTMwYRm0UHNjzTY5dh4+LSC68Sm/7WEiimbQNYlw==}
+
   '@tauri-apps/cli-darwin-arm64@2.7.1':
     resolution: {integrity: sha512-j2NXQN6+08G03xYiyKDKqbCV2Txt+hUKg0a8hYr92AmoCU8fgCjHyva/p16lGFGUG3P2Yu0xiNe1hXL9ZuRMzA==}
     engines: {node: '>= 10'}
@@ -492,6 +501,9 @@ packages:
     resolution: {integrity: sha512-RcGWR4jOUEl92w3uvI0h61Llkfj9lwGD1iwvDRD2isMrDhOzjeeeVn9aGzeW1jubQ/kAbMYfydcA4BA0Cy733Q==}
     engines: {node: '>= 10'}
     hasBin: true
+
+  '@tauri-apps/plugin-dialog@2.4.0':
+    resolution: {integrity: sha512-OvXkrEBfWwtd8tzVCEXIvRfNEX87qs2jv6SqmVPiHcJjBhSF/GUvjqUNIDmKByb5N8nvDqVUM7+g1sXwdC/S9w==}
 
   '@tauri-apps/plugin-opener@2.4.0':
     resolution: {integrity: sha512-43VyN8JJtvKWJY72WI/KNZszTpDpzHULFxQs0CJBIYUdCRowQ6Q1feWTDb979N7nldqSuDOaBupZ6wz2nvuWwQ==}
@@ -714,6 +726,42 @@ packages:
     peerDependenciesMeta:
       vite:
         optional: true
+
+  wx-core-locales@2.2.0:
+    resolution: {integrity: sha512-bDquS5k6v784vOsjDnkpbrqL4Yh3CQGf3Rt3gM6mAFDUI97/Iy2r7fzQ3It7Hb3dxI9Vtym4Bwsg3X3ATAz8KA==}
+
+  wx-grid-data-provider@2.2.0:
+    resolution: {integrity: sha512-Qan2+yKS34uhtj5/TL8lNOA4hr6Xl1hCFbVXEspdbpy4ZcqnTOOrCddg8+XXksB8vn1+6ucwfbLTv80oIefhCw==}
+
+  wx-grid-locales@2.2.0:
+    resolution: {integrity: sha512-YVU9vR1uwPd4IiJ12GfQIDfIa9aqq1vR3cI43BI9A8a26nmoTluGXvIuOFoP3ZSg/yzW+JAe1QtTb7ejW5C6pg==}
+
+  wx-grid-store@2.2.0:
+    resolution: {integrity: sha512-H0AKzODSyEE4emA76MSpcMzPNIJlsgf3CUzaXPMuqQuaehqCNINSzmI7/5z7nHvbBJBsK8scSIi6cctj5Pyavg==}
+
+  wx-lib-data-provider@1.5.1:
+    resolution: {integrity: sha512-ebKYlnmXOuwgQ/812Ux06Uz7tIG3P8euUHB0/hwhL0+Buged+00uFII3bkXQ7jh5DbsTugFqPlzlKTJFQ2l0TA==}
+
+  wx-lib-dom@0.8.0:
+    resolution: {integrity: sha512-1jQFsoX8EiA/7D6IT8k8I52PlPFs850etY+k7jqww9CM5L3JEELprKuy422sUfXjnnpMoaVvUrmndWZVOldsAA==}
+
+  wx-lib-dom@0.9.1:
+    resolution: {integrity: sha512-uh0ikmNRSgF1ksCY4mu/Nuqo/zrTOKP75Ok+YeA+Jp6i5QCzD5EabWtgAGIBq54cikAbjSGOdNPa6qYLc9s0qA==}
+
+  wx-lib-state@1.9.3:
+    resolution: {integrity: sha512-iZVeprL3ljzTWToaN+QW9LJjWZoDyplLbkt8iryeDQaNirYFaL2ZUCp0Utjm0rSP6OfLSmaw+QYldYhmqDpyGw==}
+
+  wx-lib-svelte@0.5.1:
+    resolution: {integrity: sha512-zYfkAv5r0zQ3KFyCPPusC8EkMXUC3I0L1QsK+An0rNlRkY/iocPTOcaouyycg48BdmsBK8fSL0vK0B4oZuujrQ==}
+
+  wx-svelte-core@2.2.0:
+    resolution: {integrity: sha512-txE3Me/gfb899V3QJbH+Rt+e7rgvruzLCIKvZoDXT/c78TUWqMRHFZUpIkjlH9toozVvdL0UnyQ8BqVMRQqBVg==}
+
+  wx-svelte-grid@2.2.0:
+    resolution: {integrity: sha512-9OKwyANflqpBujsqm1geU5pgm72QnY7bMkReUAt6Q+2laL5Ccx/ZHxpo2ez14IkZh0jXoW4JCVjoaDiA32FYXg==}
+
+  wx-svelte-menu@2.2.0:
+    resolution: {integrity: sha512-uEuza5t+wc4YKqTUh6DS/ZdZBHmNcJrBLu18NuRZJMWGb+zHjBKeQNG7/eIA/zMP1yhn5Lnb6hoK6TEddaC/Wg==}
 
   zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
@@ -967,6 +1015,8 @@ snapshots:
 
   '@tauri-apps/api@2.7.0': {}
 
+  '@tauri-apps/api@2.8.0': {}
+
   '@tauri-apps/cli-darwin-arm64@2.7.1':
     optional: true
 
@@ -1013,6 +1063,10 @@ snapshots:
       '@tauri-apps/cli-win32-arm64-msvc': 2.7.1
       '@tauri-apps/cli-win32-ia32-msvc': 2.7.1
       '@tauri-apps/cli-win32-x64-msvc': 2.7.1
+
+  '@tauri-apps/plugin-dialog@2.4.0':
+    dependencies:
+      '@tauri-apps/api': 2.8.0
 
   '@tauri-apps/plugin-opener@2.4.0':
     dependencies:
@@ -1217,5 +1271,49 @@ snapshots:
   vitefu@1.1.1(vite@6.3.5):
     optionalDependencies:
       vite: 6.3.5
+
+  wx-core-locales@2.2.0: {}
+
+  wx-grid-data-provider@2.2.0:
+    dependencies:
+      wx-lib-data-provider: 1.5.1
+
+  wx-grid-locales@2.2.0: {}
+
+  wx-grid-store@2.2.0:
+    dependencies:
+      wx-lib-state: 1.9.3
+
+  wx-lib-data-provider@1.5.1: {}
+
+  wx-lib-dom@0.8.0: {}
+
+  wx-lib-dom@0.9.1: {}
+
+  wx-lib-state@1.9.3: {}
+
+  wx-lib-svelte@0.5.1: {}
+
+  wx-svelte-core@2.2.0:
+    dependencies:
+      wx-core-locales: 2.2.0
+      wx-lib-dom: 0.8.0
+      wx-lib-svelte: 0.5.1
+
+  wx-svelte-grid@2.2.0:
+    dependencies:
+      wx-grid-data-provider: 2.2.0
+      wx-grid-locales: 2.2.0
+      wx-grid-store: 2.2.0
+      wx-lib-dom: 0.9.1
+      wx-lib-state: 1.9.3
+      wx-lib-svelte: 0.5.1
+      wx-svelte-core: 2.2.0
+      wx-svelte-menu: 2.2.0
+
+  wx-svelte-menu@2.2.0:
+    dependencies:
+      wx-lib-dom: 0.9.1
+      wx-svelte-core: 2.2.0
 
   zimmerframe@1.1.2: {}

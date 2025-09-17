@@ -1,0 +1,8 @@
+[package]
+name = "csv_explorer"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+polars = { version = "0.50.0", features = ["lazy", "json"] }
+qsv-sniffer = "0.11.0"
