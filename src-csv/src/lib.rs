@@ -1,23 +1,13 @@
 use polars::prelude::*;
-use std::env;
+// DONE: CLAP-Handling imports
+use clap::Parser;
 
-pub fn show_sniffer_metadata(path: &str) {
-    // sniff the path provided by the first argument
-    match qsv_sniffer::Sniffer::new().sniff_path(path) {
-        Ok(metadata) => {
-            println!("Metadata for: {}", path);
-            println!("{}", metadata);
-        }
-        Err(err) => {
-            eprintln!("ERROR: {}", err);
-        }
-    }
-}
-
-pub fn read_csv_file(path: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let json_string = read_csv_file_as_json_as_string(path)?;
-    println!("csv as json:{}", json_string);
-    Ok(())
+/// A simple CLI tool to process a file.
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+pub struct Cli {
+    /// The path to the file to process.
+    pub filename: Option<String>,
 }
 
 pub fn read_csv_file_as_json_as_string(path: &str) -> Result<String, Box<dyn std::error::Error>> {

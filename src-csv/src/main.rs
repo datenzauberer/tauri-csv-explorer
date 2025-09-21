@@ -1,7 +1,21 @@
-use csv_explorer::read_csv_file_as_json_as_string;
+use clap::{CommandFactory, Parser};
+use csv_explorer::{read_csv_file_as_json_as_string, Cli};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let path = "../test-data/test-file-short.csv";
+    let cli = Cli::parse();
+
+    if let Some(filename) = cli.filename {
+        process_file(&filename)?;
+    } else {
+        Cli::command().print_help()?;
+        let test_file = "../test-data/test-file-short.csv";
+        process_file(&test_file)?;
+    //    Err("no filename specified".into())
+    }
+    Ok(())
+}
+
+fn process_file(path: &str) -> Result<(), Box<dyn std::error::Error>> {
     show_sniffer_metadata(path);
     read_csv_file(path)?;
     Ok(())
