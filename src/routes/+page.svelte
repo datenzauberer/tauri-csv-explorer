@@ -1,9 +1,22 @@
 <script lang="ts">
     // Tauri Imports
     import { invoke } from "@tauri-apps/api/core";
+
     // REQ-004 webviewWindow has draganddrop event
     import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
+    import { getCurrentWindow } from '@tauri-apps/api/window';
     import type { UnlistenFn } from '@tauri-apps/api/event';
+    // REG-005
+    import { setCustomMenu } from '$lib/menu';
+    // REG-006
+    import { getDisplayShortcutFileOpen } from '$lib/menu';
+    
+    // REQ-005 for handling custom menu items
+    import { listen } from '@tauri-apps/api/event';
+    // REQ-006 get Application Name
+    import { getName } from '@tauri-apps/api/app';
+    import { basename } from '@tauri-apps/api/path';
+
     // REQ-002 plugin-dialog is needed
     import { open } from "@tauri-apps/plugin-dialog";
 
@@ -38,6 +51,9 @@
           // SMTODO: Error Handling (set error from Rust Backend)
           console.error("Error from Tauri backend:", e);
         }
+        // REQ-006 set application title with filename
+        const fileName = await basename(filePath);
+        await getCurrentWindow().setTitle(await getName() + `: ${fileName}`);
       } else {
         console.warn("No file path provided.");
       }
@@ -56,33 +72,45 @@
       }
     }
 
-  // REQ-004 Implementation: register on mount and clean up on destroy
     const appWindow = getCurrentWebviewWindow();
 
-    let unlisten: UnlistenFn | null = null;
+    let unlistenDragAndDrop: UnlistenFn | null = null;
+    let unlistenFileOpen: UnlistenFn | null = null;
     onMount(async () => {
-        unlisten = await appWindow.onDragDropEvent(async (event) => {
+        // REQ-006 set default Application Name
+        await getCurrentWindow().setTitle(await getName() + `: ${getDisplayShortcutFileOpen()} to open a file`);
+
+        // REQ-004 Implementation: register onDragDropEvent clean up on destroy
+        unlistenDragAndDrop = await appWindow.onDragDropEvent(async (event) => {
             if (event.payload.type === 'drop') {
-            console.log('Files dropped:', event.payload.paths);
-            const first = event.payload.paths?.[0];
-            if (first) {
-                await handleFileChange(first);
-            }
+              const first = event.payload.paths?.[0];
+              if (first) {
+                  await handleFileChange(first);
+              }
             }
         });
+        // REQ-005 set Menu and listen to File Open Event
+        await setCustomMenu();
+        unlistenFileOpen = await listen('menu_action_open_file', async (event) => {
+          await openFileDialog();
+        });
+
     });
     onDestroy(() => {
-      if (unlisten) {
-          unlisten(); // Remove Tauri listener
+      if (unlistenDragAndDrop) {
+          unlistenDragAndDrop();
+      }
+      if (unlistenFileOpen) {
+          unlistenFileOpen();
       }
     });
 </script>
 
 <main class="container">
-    <h1>TauriCSVExplorer 5</h1>
+    <h1>TauriCSVExplorer</h1>
     <button type="button" onclick={openFileDialog}>Open File</button>
 
-    <p>filepath: {filepath}</p>
+    <p>Absolute filename: {filepath}</p>
 
     <Willow>
         <Grid data={csvData} autoConfig={config} />

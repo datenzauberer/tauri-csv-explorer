@@ -83,11 +83,21 @@ Because we use an already existing clap logic, we do not need the tauri cli-plug
 
 ## REQ-004 Drag & Drop
 
-SMPRIO
+## REQ-005 Menue
 
-## Menue
+## REQ-006 Application Title
 
-## Application Title
+To set the Application Title following permission must be set:
+
+```sh
+pnpm tauri permission add "core:window:allow-set-title"
+```
+
+Otherwise we get:
+
+```
+Unhandled Promise Rejection: window.set_title not allowed. Permissions associated with this command: core:window:allow-set-title
+```
 
 ## Application Icon
 
@@ -98,5 +108,9 @@ SMPRIO
 SMTODO: Test : FileOpenDialog
 
 ## Update Process
+
+# Error Handling (errots from rust should be shown in svelte frontend)
+
+SMTODO: https://v2.tauri.app/develop/calling-rust/#error-handling
 
 # SMTODO: OSS-LICENCE: MIT
