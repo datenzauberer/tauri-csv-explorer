@@ -1,0 +1,84 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+#        os: ['ubuntu-latest', 'windows-latest', 'macos-latest', 'ubuntu-22.04', 'ubuntu-22.04-arm', 'ubuntu-24.04-arm']
+#        os: ['macos-latest', 'ubuntu-22.04', 'ubuntu-22.04-arm', 'ubuntu-24.04-arm']
+        os: ['ubuntu-22.04-arm']
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Show runner OS
+        run: echo "Building on ${{ runner.os }}"
+          
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10.13.1
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install Rust (stable)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ contains(matrix.os, 'macos') && 'aarch64-apple-darwin' || '' }}
+
+      - name: Install Linux dependencies (Ubuntu only NOT ARM)
+        if: contains(matrix.os, 'ubuntu') && !contains(runner.arch, 'arm')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            desktop-file-utils appstream
+
+      - name: Install Linux dependencies (Ubuntu ARM only)
+        if: contains(matrix.os, 'ubuntu') && contains(runner.arch, 'arm')
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            libwebkit2gtk-4.1-dev:arm64 \
+            libayatana-appindicator3-dev:arm64 \
+            librsvg2-dev:arm64 \
+            patchelf \
+            desktop-file-utils appstream \
+            xdg-utils
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build and publish with Tauri
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Pass the secret from the repository to the step's environment
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}          
+        with:
+          tagName: app-v__VERSION__
+          releaseName: "App v__VERSION__"
+          releaseBody: "See the assets to download this version and install."
+          releaseDraft: true
+          prerelease: false
+          args: --verbose
+
