@@ -111,8 +111,10 @@ https://v2.tauri.app/develop/calling-rust/#error-handling
 Demo to use a new icon 
 
 ```sh
-pnpm taurirc/assets/icon_csv_text.png
+pnpm tauri icon taurirc/assets/icon_csv_text.png
 ```
+
+After changing the icon in `src-tauri` a `cargo clean` is needed to reflect the changes.
 
 # Distribute Cross-Platform Application
 
@@ -123,7 +125,7 @@ pnpm taurirc/assets/icon_csv_text.png
 # Demo with another icon
 
 ```sh
-pnpm tauri src/assets/icon_document_symbol.png
+pnpm tauri icon src/assets/icon_document_symbol.png
 ```
 
 ## SMTOD opener entfernen !!!!
