@@ -32,6 +32,7 @@
 
 
     // Svelte states
+    let error = $state<string | null>(null);
     let filepath = $state("");
     let csvData = $state([]);
 
@@ -40,17 +41,24 @@
     // --- Tauri Dialog File Selection Logic ---
     async function handleFileChange(filePath: string) {
       if (filePath) {
-        try {
-          const result: string = await invoke("tauri_read_csv_file", {
-            path: filePath,
-          });
+        // Clear previous error and data
+        error = null;
+        csvData = [];
 
+        invoke("tauri_read_csv_file", {
+          path: filePath,
+        })
+        .then((result: unknown) => {
+          // The invoke call was successful, so parse the result and update the states.
+          const resultString = result as string;
           filepath = filePath;
-          csvData = JSON.parse(result);
-        } catch (e) {
-          // SMTODO: Error Handling (set error from Rust Backend)
+          csvData = JSON.parse(resultString);
+        })
+        .catch((e: string) => {
+          // The invoke call returned an Err from Rust, so handle the error here.
+          error = e;
           console.error("Error from Tauri backend:", e);
-        }
+        });
         // REQ-006 set application title with filename
         const fileName = await basename(filePath);
         await getCurrentWindow().setTitle(await getName() + `: ${fileName}`);
@@ -112,7 +120,25 @@
 
     <p>Absolute filename: {filepath}</p>
 
-    <Willow>
-        <Grid data={csvData} autoConfig={config} />
-    </Willow>
+    {#if error}
+        <div class="error-box">
+            <p>Error: {error}</p>
+        </div>
+    {:else}
+        <Willow>
+            <Grid data={csvData} autoConfig={config} />
+        </Willow>
+    {/if}
 </main>
+
+<style>
+    .error-box {
+        background-color: #ffeaea; /* Light red background */
+        border: 1px solid #ff4d4d; /* Red border */
+        color: #ff4d4d; /* Red text */
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        font-family: monospace;
+    }
+</style>

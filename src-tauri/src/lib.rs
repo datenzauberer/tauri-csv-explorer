@@ -1,8 +1,10 @@
 use csv_explorer::read_csv_file_as_json_as_string;
 
 #[tauri::command]
-fn tauri_read_csv_file(path: &str) -> String {
-    read_csv_file_as_json_as_string(path).expect("SMTODO: Handle Error")
+#[cfg(not(target_os = "android"))]
+fn tauri_read_csv_file(path: &str) -> Result<String, String> {
+    read_csv_file_as_json_as_string(path)
+    .map_err(move |e| format!("Failed to read file from path '{}': {}", path, e.to_string()))
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
