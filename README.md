@@ -74,7 +74,7 @@ Component for visualizing the CSV-Data
 pnpm install wx-svelte-grid
 ```
 
-If no `defaultPath` is set, the Path is set first on $HOME/Documents and after one selection to the latest used directory.
+If no `defaultPath` is set, the Path is set first on `$HOME/Documents` and after one selection to the latest used directory.
 
 ## REQ-003 CLI Argument FileName
 
@@ -101,36 +101,31 @@ Otherwise we get:
 Unhandled Promise Rejection: window.set_title not allowed. Permissions associated with this command: core:window:allow-set-title
 ```
 
+## DataGrid
+
+Error Handling (errors from rust should be shown in svelte frontend)
+https://v2.tauri.app/develop/calling-rust/#error-handling
+
 ## Application Icon
+
+Demo to use a new icon 
+
+```sh
+pnpm taurirc/assets/icon_csv_text.png
+```
 
 # Distribute Cross-Platform Application
 
 ## Release Creation
 
-SMTODO: Test : FileOpenDialog (initial directory after installation) on android
-
 ## Update Process
 
-# SMTODO: Error Handling (errors from rust should be shown in svelte frontend)
-
-SMTODO: https://v2.tauri.app/develop/calling-rust/#error-handling
-
-## REQ-100 Android Support
-
-This is just for demonstration purposes, that it's complicates things if addressing desktop and mobile in own application.
-
-Precondition: Android installed (with one emulator for testing)
-
-File Access for Android works with `plugin-fs`:
+# Demo with another icon
 
 ```sh
-
+pnpm tauri src/assets/icon_document_symbol.png
 ```
 
 ## SMTOD opener entfernen !!!!
 
-```sh
-pnpm tauri android build --apk --target aarch64
-```
-
-# SMTODO: OSS-LICENCE: MIT
+# License: MIT
