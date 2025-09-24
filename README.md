@@ -101,10 +101,13 @@ Otherwise we get:
 Unhandled Promise Rejection: window.set_title not allowed. Permissions associated with this command: core:window:allow-set-title
 ```
 
-## DataGrid
+## Svelte UI: DataGrid
 
-Error Handling (errors from rust should be shown in svelte frontend)
+For visualization the [Svelte Datagrid](https://svar.dev/svelte/datagrid/) is used.
+
+Error Handling 
 https://v2.tauri.app/develop/calling-rust/#error-handling
+Errors from the Rust backend are propagated to the Frontend.
 
 ## Application Icon
 
@@ -116,16 +119,23 @@ pnpm tauri icon taurirc/assets/icon_csv_text.png
 
 After changing the icon in `src-tauri` a `cargo clean` is needed to reflect the changes.
 
+## SMTODO: Deep Link
+
 # Distribute Cross-Platform Application
 
 ## Release Creation
 
-## Update Process
+implemented with Github Actions, see: [.github/workflows/publish-tauri-app.yml](.github/workflows/publish-tauri-app.yml)
 
-# Demo with another icon
+Be aware, that creating a 
+
+## REQ-102 Update Process
+
+Demonstration with AppImage on Ubuntu ARM.
+For Mac/Windows a signed release must be created.
 
 ```sh
-pnpm tauri icon src/assets/icon_document_symbol.png
+cargo tauri add updater
 ```
 
 ## SMTOD opener entfernen !!!!

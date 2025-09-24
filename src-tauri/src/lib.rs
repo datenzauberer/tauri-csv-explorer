@@ -6,9 +6,46 @@ fn tauri_read_csv_file(path: &str) -> Result<String, String> {
     .map_err(move |e| format!("Failed to read file from path '{}': {}", path, e.to_string()))
 }
 
+use tauri_plugin_updater::UpdaterExt;
+
+async fn update(app: tauri::AppHandle) -> tauri_plugin_updater::Result<()> {
+  if let Some(update) = app.updater()?.check().await? {
+    let mut downloaded = 0;
+
+    // alternatively we could also call update.download() and update.install() separately
+    update
+      .download_and_install(
+        |chunk_length, content_length| {
+          downloaded += chunk_length;
+          println!("downloaded {downloaded} from {content_length:?}");
+        },
+        || {
+          println!("download finished");
+        },
+      )
+      .await?;
+
+    println!("update installed");
+    app.restart();
+  } else {
+    println!("No update available.");
+  }
+
+  Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .setup(|app| {
+          // Update 
+          let handle = app.handle().clone();
+          tauri::async_runtime::spawn(async move {
+            update(handle).await.unwrap();
+          });
+          Ok(())
+        })
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
