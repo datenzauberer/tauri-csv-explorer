@@ -156,8 +156,8 @@ async function createAboutItem() {
     const name = await getName();
     const version = await getVersion();
     // SMTODO: copyright info cannot be accessed from TypeScript (workaround over invole)
-    const copyright = "SMWORKAROUND copyrigth";
-    const publisher = "SMTODO authors";
+    const copyright = "MIT License"; // SMWORKAROUND copyright
+    const publisher = "SMINFO authors";
 
     const aboutMetadata: AboutMetadata = {
         name,

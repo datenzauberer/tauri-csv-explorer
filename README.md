@@ -1,61 +1,69 @@
-#  tauri-csv-explorer
+# <img src="./src-tauri/icons/128x128.png" alt="App Icon" width="16" /> tauri-csv-explorer
 
-This is a demonstration for using Tauri (with SvelteKit and TypeScript) for desktop applications.
-It's a csv viewer.
-I've tested it on Mac Os and Linux (Ubuntu).
+tauri-csv-explorer is a cross-platform desktop application for viewing and exploring CSV files. It's a demonstration of building a modern desktop app using Tauri, with a robust separation of concerns between a Rust backend and a SvelteKit frontend.
 
-# Architecture
+The application has been tested on macOS and Linux (Ubuntu).
 
-We have a clear separation of concern.
-The backend is implemented in Rust, the frontend in Svelte,
-In other words: The business logic is implemented (and should be tested) in Rust in an own lib create.
-the UI (in Typescript).
+![app screenshot](images/app-screenshot.png)
 
-In the frontend TypeScript(JavaScript) based Framework is used, because there are many components for handling DataTables.
-We as Rust developers trust in Typing so we use TypeScript (instead of untyped JavaScript).
-For Reading the CSV-file polars is used (for this used case it's oversized, but the integration between Rust/polars and Typescript has a lot of potential not only in DataScience).
-Svelte is used because of Speed and Simplicity.
 
-# Requirements
+## Architecture
 
-## REQ-0001 CSV Logic Lib
+This application follows a **clear separation of concerns** pattern.
 
-The logic for extracting the metadata (like delimeter) must be in a separate crate.
-There should be a cli version that use the lib crate independently.
+  * The **backend**, written in **Rust**, handles all the business logic, including file I/O and CSV data processing. This logic is contained in a separate, reusable library (`src-csv`). We use **polars** for high-performance data processing, demonstrating its powerful integration capabilities with other languages.
+  * The **frontend**, built with **SvelteKit** and **TypeScript**, provides the user interface. Svelte's speed and simplicity, combined with TypeScript's strong typing, create a fast and reliable user experience. The frontend communicates with the Rust backend via Tauri's `invoke` API.
 
-## REQ-002 Button Open CSV-File
+## Features
 
-# CSV-Demo Implementation
+The application is built to fulfill the following requirements:
 
-TODO: Full Picture
+  * **REQ-002 Open CSV File**: A user-friendly button to open and display a CSV file.
+  * **REQ-004 Drag & Drop**: Users can drag and drop a CSV file onto the application window to open it.
+  * **REQ-003 CLI Argument**: The app can be launched from the command line with a specified CSV file path.
+  * **REQ-005 Menu**: A standard application menu with relevant options.
+  * **REQ-006 Dynamic Title**: The application window title updates to reflect the currently viewed file.
+  * **File Association**: The app is registered to open `.csv` files by default.
+  * **Automatic Updates**: The app includes an updater to manage releases and provide seamless updates.
 
-# Develop Cross-Platform Application
+Search for REQ-xxx in the codebase to locate the corresponding code snippets.
 
-## REQ-001 Logic src-csv (CSV Processing) in an own crate
+## Implementation Details
 
-logic is in an own lib create, so that we can demonstrate
-how to make a UI for a existing library.
+### CSV Logic Lib (`src-csv`)
 
-In `src-csv`:
+The core logic for processing CSV files, including metadata extraction (e.g., delimiter detection), resides in its own Rust crate. This demonstrates how to build a UI for an existing library. A CLI version of this library can be used independently to confirm functionality.
+
+### Svelte UI: Data Grid
+
+For visualizing the CSV data, the [Svelte Datagrid](https://svar.dev/svelte/datagrid/) is used. The chosen component is ideal for handling and displaying tabular data efficiently.
+
+### Application Icon
+
+To change the application icon, use the Tauri CLI:
 
 ```sh
-echo target > .gitignore
+pnpm tauri icon path/to/your/icon.png
 ```
 
-## REQ-002 UI (with button load csv)
+After changing the icon in the `src-tauri` directory, a `cargo clean` is required to ensure the changes are reflected in the build.
 
-Plugin dialog is needed, more see:
-https://v2.tauri.app/reference/javascript/dialog/
+### Error Handling
+
+The application leverages Tauri's built-in error propagation. Errors from the Rust backend are automatically sent to the frontend, allowing for unified error handling.
+
+### REQ-002 UI (with button load csv)
+
+#### Add and Configure [Dialog plugin](https://v2.tauri.app/reference/javascript/dialog/
+)
 
 ```sh
 pnpm tauri add dialog
 ```
 
-see: src-tauri/capabilities/default.json
+set permissions in [./src-tauri/capabilities/default.json](./src-tauri/capabilities/default.json): `"dialog:allow-open"`
 
-    "dialog:allow-open"
-
-Component for visualizing the CSV-Data
+#### Component for visualizing the CSV-Data
 
 ```sh
 pnpm install wx-svelte-grid
@@ -63,44 +71,41 @@ pnpm install wx-svelte-grid
 
 If no `defaultPath` is set, the Path is set first on `$HOME/Documents` and after one selection to the latest used directory.
 
-## REQ-003 CLI Argument FileName
+### REQ-003 CLI Argument FileName
 
-When the Tauri App is started from CLI there should be a way to pass the csv file.
+When the Tauri app is started from the CLI, the first positional parameter is the CSV filename. Since we already use existing Clap logic in `src-csv`, the Tauri CLI plugin is not needed !
 
-Implementation:
-Because we use an already existing clap logic, we do not need the tauri cli-plugin !
+### REQ-005 Menu
 
-## REQ-004 Drag & Drop
+The menu is implemented in TypeScript, as it belongs to the frontend.
 
-## REQ-005 Menue
+### REQ-006 Dynamic Application Title
 
-## REQ-006 Application Title
-
-To set the Application Title following permission must be set:
+To set the application title, the following permission must be added:
 
 ```sh
 pnpm tauri permission add "core:window:allow-set-title"
 ```
 
-Otherwise we get:
+Otherwise, the title will not update, and only an error will appear in the browser console:
 
 ```
 Unhandled Promise Rejection: window.set_title not allowed. Permissions associated with this command: core:window:allow-set-title
 ```
 
-## Svelte UI: DataGrid
+### Svelte UI: DataGrid
 
 For visualization the [Svelte Datagrid](https://svar.dev/svelte/datagrid/) is used.
+
+Alternative:
+https://github.com/joaquimnetocel/svelte-datatables-net
 
 Error Handling 
 https://v2.tauri.app/develop/calling-rust/#error-handling
 Errors from the Rust backend are propagated to the Frontend.
 
 
-Alternative:
-https://github.com/joaquimnetocel/svelte-datatables-net
-
-## Application Icon
+### Application Icon
 
 Demo to use a new icon 
 
@@ -110,11 +115,13 @@ pnpm tauri icon taurirc/assets/icon_csv_text.png
 
 After changing the icon in `src-tauri` a `cargo clean` is needed to reflect the changes.
 
-## File Association (`.csv`)
+### File Association (`.csv`)
 
 Files with Extension `.csv` should opened with the application.
 
-Implementation: tauri.conf.json
+Implementation:
+In [./src-tauri/tauri.conf.json](./src-tauri/tauri.conf.json) add `fileAssociations`:
+
 ``` 
   "bundle": {
     "fileAssociations": [
@@ -130,32 +137,34 @@ Implementation: tauri.conf.json
     ],
 ```
 
+## Distribute & Release
 
-# Distribute Cross-Platform Application
+### Release Creation
 
-## Release Creation
+Releases are automated using GitHub Actions. The workflow for publishing the app is defined in [.github/workflows/publish-tauri-app.yml](.github/workflows/publish-tauri-app.yml)
 
-implemented with Github Actions, see: [.github/workflows/publish-tauri-app.yml](.github/workflows/publish-tauri-app.yml)
+### REQ-102 Update Process
 
-## REQ-102 Update Process
+When a new release is available it should be installed automatically.
+This currently only works for demonstration purposes with an AppImage on Ubuntu ARM.
 
-Demonstration with AppImage on Ubuntu ARM.
-For Mac/Windows a signed release must be created.
+To support this on macOS Apple the app must be signed (an Apple Developer account is needed).
+For Windows a signed release must be created.
+
+Add the plugin
 
 ```sh
 cargo tauri add updater
 ```
 
-SMTODO:
-
-Tauri internal signs the updates:
+Tauri updater signs the apps.
 So create Tauri Keys
+
+```sh
 pnpm tauri signer generate -w ~/.tauri/myapp.key
+```
 
-This Keys have to be added to your:
-
-## ./src-tauri/tauri.conf.json : configure updater
-SMTODO: Code Formatter
+This Keys have to be added to your [./src-tauri/tauri.conf.json](./src-tauri/tauri.conf.json):
 
 ```
 createUpdaterArtifacts true
@@ -174,9 +183,8 @@ createUpdaterArtifacts true
 ```
 
 more:
-https://v2.tauri.app/plugin/updater/#tauri-configuration
+<https://v2.tauri.app/plugin/updater/#tauri-configuration>
 
-To create the 
 In Github `TAURI_SIGNING_PRIVATE_KEY` and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` have to be configured as secrets to sign a update release, e.g.:
 
 ```sh
@@ -184,17 +192,8 @@ echo $TAURI_SIGNING_PRIVATE_KEY | gh secret set TAURI_SIGNING_PRIVATE_KEY
 echo $TAURI_SIGNING_PRIVATE_KEY_PASSWORD | gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD
 ```
 
-# Recommended IDE Setup
+## Recommended IDE Setup
 
 [VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
 
-# License: MIT
-
-SMTODO: Code Formatter
-```
-        "fix": "prettier -w \"**/*.svelte\" && biome check --write .",
-        "verify": "prettier -c \"**/*.svelte\" && biome check . && svelte-check"
-```
-
-SMTODO: vscode settings
-
+## License: MIT
