@@ -138,6 +138,37 @@ For Mac/Windows a signed release must be created.
 cargo tauri add updater
 ```
 
+SMTODO:
+
+Tauri internal signs the updates:
+So create Tauri Keys
+pnpm tauri signer generate -w ~/.tauri/myapp.key
+
+This Keys have to be added to your:
+
+## ./src-tauri/tauri.conf.json : configure updater
+SMTODO: Code Formatter
+
+```
+createUpdaterArtifacts true
+  "bundle": {
+...  
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+...
+  "updater": {
+    "pubkey": "SMTODO: insert",
+    "endpoints": [
+        "https://github.com/SMTODO:user/SMTODO:repo/releases/latest/download/latest.json"
+    ]
+  }
+```
+
 ## SMTOD opener entfernen !!!!
 
 # License: MIT
+
+SMTODO: Code Formatter
+
+SMNEXT: convert .json -> .toml
