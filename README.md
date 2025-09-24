@@ -54,8 +54,7 @@ The application leverages Tauri's built-in error propagation. Errors from the Ru
 
 ### REQ-002 UI (with button load csv)
 
-#### Add and Configure [Dialog plugin](https://v2.tauri.app/reference/javascript/dialog/
-)
+#### Add and Configure [Dialog plugin](https://v2.tauri.app/reference/javascript/dialog/)
 
 ```sh
 pnpm tauri add dialog
