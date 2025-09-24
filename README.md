@@ -11,7 +11,7 @@ The application has been tested on macOS and Linux (Ubuntu).
 
 This application follows a **clear separation of concerns** pattern.
 
-  * The **backend**, written in **Rust**, handles all the business logic, including file I/O and CSV data processing. This logic is contained in a separate, reusable library (`src-csv`). We use **polars** for high-performance data processing, demonstrating its powerful integration capabilities with other languages.
+  * The **backend**, written in **Rust**, handles all the business logic, including file I/O and CSV data processing. This logic is contained in a separate, reusable library (`src-csv`). We use [Polars](https://pola.rs/) to read CSV files. While it may be oversized for this simple use case, it showcases the potential of Rust for Data Science applications.
   * The **frontend**, built with **SvelteKit** and **TypeScript**, provides the user interface. Svelte's speed and simplicity, combined with TypeScript's strong typing, create a fast and reliable user experience. The frontend communicates with the Rust backend via Tauri's `invoke` API.
 
 ## Features
