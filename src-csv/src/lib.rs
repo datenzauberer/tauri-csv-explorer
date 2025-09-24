@@ -34,4 +34,3 @@ fn read_csv_file_as_json_as_u8(path: &str) -> Result<Vec<u8>, Box<dyn std::error
 
     Ok(buffer)
 }
-

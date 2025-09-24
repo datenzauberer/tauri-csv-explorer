@@ -1,5 +1,5 @@
 use clap::{CommandFactory, Parser};
-use csv_explorer::{read_csv_file_as_json_as_string, Cli};
+use csv_explorer::{Cli, read_csv_file_as_json_as_string};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
@@ -9,8 +9,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         Cli::command().print_help()?;
         let test_file = "../test-data/test-file-short.csv";
-        process_file(&test_file)?;
-    //    Err("no filename specified".into())
+        process_file(test_file)?;
+        //    Err("no filename specified".into())
     }
     Ok(())
 }

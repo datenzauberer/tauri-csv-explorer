@@ -96,6 +96,7 @@ Error Handling
 https://v2.tauri.app/develop/calling-rust/#error-handling
 Errors from the Rust backend are propagated to the Frontend.
 
+
 Alternative:
 https://github.com/joaquimnetocel/svelte-datatables-net
 
@@ -182,8 +183,6 @@ In Github `TAURI_SIGNING_PRIVATE_KEY` and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` h
 echo $TAURI_SIGNING_PRIVATE_KEY | gh secret set TAURI_SIGNING_PRIVATE_KEY
 echo $TAURI_SIGNING_PRIVATE_KEY_PASSWORD | gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD
 ```
-
-## SMTOD opener entfernen !!!!
 
 # Recommended IDE Setup
 
