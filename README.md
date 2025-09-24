@@ -1,14 +1,8 @@
-# Tauri + SvelteKit + TypeScript
+#  tauri-csv-explorer
 
-This template should help get you started developing with Tauri, SvelteKit and TypeScript in Vite.
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
-
-
-Kopiere Vorlage aus
-
+This is a demonstration for using Tauri (with SvelteKit and TypeScript) for desktop applications.
+It's a csv viewer.
+I've tested it on Mac Os and Linux (Ubuntu).
 
 # Architecture
 
@@ -18,16 +12,9 @@ In other words: The business logic is implemented (and should be tested) in Rust
 the UI (in Typescript).
 
 In the frontend TypeScript(JavaScript) based Framework is used, because there are many components for handling DataTables.
-SMTODO: Show a small overview.
 We as Rust developers trust in Typing so we use TypeScript (instead of untyped JavaScript).
 For Reading the CSV-file polars is used (for this used case it's oversized, but the integration between Rust/polars and Typescript has a lot of potential not only in DataScience).
 Svelte is used because of Speed and Simplicity.
-
-## SMTODO: Frontend TS vs. Rust
-Demonstrate Hot Module Reload (in Rust) zum Vergleich mit TS
-Hot Reload
-
-## "Write once, run anywhere"
 
 # Requirements
 
@@ -109,6 +96,9 @@ Error Handling
 https://v2.tauri.app/develop/calling-rust/#error-handling
 Errors from the Rust backend are propagated to the Frontend.
 
+Alternative:
+https://github.com/joaquimnetocel/svelte-datatables-net
+
 ## Application Icon
 
 Demo to use a new icon 
@@ -119,15 +109,32 @@ pnpm tauri icon taurirc/assets/icon_csv_text.png
 
 After changing the icon in `src-tauri` a `cargo clean` is needed to reflect the changes.
 
-## SMTODO: Deep Link
+## File Association (`.csv`)
+
+Files with Extension `.csv` should opened with the application.
+
+Implementation: tauri.conf.json
+``` 
+  "bundle": {
+    "fileAssociations": [
+      {
+        "ext": [
+          "csv"
+        ],
+        "name": "CSV File",
+        "role": "Editor",
+        "mimeType": "text/csv",
+        "description": "A comma-separated values file."
+      }
+    ],
+```
+
 
 # Distribute Cross-Platform Application
 
 ## Release Creation
 
 implemented with Github Actions, see: [.github/workflows/publish-tauri-app.yml](.github/workflows/publish-tauri-app.yml)
-
-Be aware, that creating a 
 
 ## REQ-102 Update Process
 
@@ -158,17 +165,37 @@ createUpdaterArtifacts true
   "plugins": {
 ...
   "updater": {
-    "pubkey": "SMTODO: insert",
+    "pubkey": "TODO: insert",
     "endpoints": [
-        "https://github.com/SMTODO:user/SMTODO:repo/releases/latest/download/latest.json"
+        "https://github.com/TODO:user/TODO:repo/releases/latest/download/latest.json"
     ]
   }
 ```
 
+more:
+https://v2.tauri.app/plugin/updater/#tauri-configuration
+
+To create the 
+In Github `TAURI_SIGNING_PRIVATE_KEY` and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` have to be configured as secrets to sign a update release, e.g.:
+
+```sh
+echo $TAURI_SIGNING_PRIVATE_KEY | gh secret set TAURI_SIGNING_PRIVATE_KEY
+echo $TAURI_SIGNING_PRIVATE_KEY_PASSWORD | gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD
+```
+
 ## SMTOD opener entfernen !!!!
+
+# Recommended IDE Setup
+
+[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
 
 # License: MIT
 
 SMTODO: Code Formatter
+```
+        "fix": "prettier -w \"**/*.svelte\" && biome check --write .",
+        "verify": "prettier -c \"**/*.svelte\" && biome check . && svelte-check"
+```
 
-SMNEXT: convert .json -> .toml
+SMTODO: vscode settings
+

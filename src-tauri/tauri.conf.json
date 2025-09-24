@@ -4,10 +4,10 @@
   "version": "0.0.5",
   "identifier": "de.datenzauberer.tauri-csv-explorer",
   "build": {
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "npm run build",
-    "frontendDist": "../build"
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../build"  
   },
   "app": {
     "windows": [
