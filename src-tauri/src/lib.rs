@@ -1,4 +1,4 @@
-use csv_explorer::read_csv_file_as_json_as_string;
+use csv_explorer::{Cli, read_csv_file_as_json_as_string};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
