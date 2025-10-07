@@ -23,7 +23,7 @@ The application is built to fulfill the following requirements:
   * **REQ-003 CLI Argument**: The app can be launched from the command line with a specified CSV file path.
   * **REQ-005 Menu**: A standard application menu with relevant options.
   * **REQ-006 Dynamic Title**: The application window title updates to reflect the currently viewed file.
-  * **File Association**: The app is registered to open `.csv` files by default.
+  * **REQ-007 File Association**: The app is registered to open `.csv` files by default.
   * **Automatic Updates**: The app includes an updater to manage releases and provide seamless updates.
 
 Search for REQ-xxx in the codebase to locate the corresponding code snippets.

@@ -26,6 +26,7 @@ serde_json = "1.0.145"
 csv-explorer = { path = "../src-csv" }
 tauri-plugin-dialog = "2.4.0"
 tauri-plugin-os = "2"
+clap = "4.5.48"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-updater = "2"

@@ -31,7 +31,7 @@
 
     // Svelte states
     let error = $state<string | null>(null);
-    let filepath = $state("");
+    let filepath = $state<string | null>("");
     let csvData = $state([]);
 
     const config = { editor: "text", sort: true };
@@ -85,11 +85,18 @@
     let unlistenDragAndDrop: UnlistenFn | null = null;
     let unlistenFileOpen: UnlistenFn | null = null;
     onMount(async () => {
+        // REQ-003 CLI argument
+        filepath = await invoke<string | null>("get_cli_filename");
+        if (filepath) {
+          console.log("SMTEST: file loaded");
+          await handleFileChange(filepath);
+        } else {
         // REQ-006 set default Application Name
-        await getCurrentWindow().setTitle(
-            (await getName()) +
-                `: ${getDisplayShortcutFileOpen()} to open a file`
-        );
+          await getCurrentWindow().setTitle(
+              (await getName()) +
+                  `: ${getDisplayShortcutFileOpen()} to open a file`
+          );
+        }
 
         // REQ-004 Implementation: register onDragDropEvent clean up on destroy
         unlistenDragAndDrop = await appWindow.onDragDropEvent(async (event) => {
