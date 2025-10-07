@@ -31,25 +31,25 @@
 
     // Svelte states
     let error = $state<string | null>(null);
-    let filepath = $state<string | null>("");
+    let filename = $state<string | null>("");
     let csvData = $state([]);
 
     const config = { editor: "text", sort: true };
 
     // --- Tauri Dialog File Selection Logic ---
-    async function handleFileChange(filePath: string) {
-        if (filePath) {
+    async function handleFileChange(newFileName: string) {
+        if (newFileName) {
             // Clear previous error and data
             error = null;
             csvData = [];
 
             invoke("tauri_read_csv_file", {
-                path: filePath,
+                path: newFileName,
             })
                 .then((result: unknown) => {
                     // The invoke call was successful, so parse the result and update the states.
                     const resultString = result as string;
-                    filepath = filePath;
+                    filename = newFileName;
                     csvData = JSON.parse(resultString);
                 })
                 .catch((e: string) => {
@@ -58,12 +58,12 @@
                     console.error("Error from Tauri backend:", e);
                 });
             // REQ-006 set application title with filename
-            const fileName = await basename(filePath);
+            const fileNameBase = await basename(newFileName);
             await getCurrentWindow().setTitle(
-                (await getName()) + `: ${fileName}`
+                (await getName()) + `: ${fileNameBase}`
             );
         } else {
-            console.warn("No file path provided.");
+            console.warn("No filename provided.");
         }
     }
 
@@ -86,16 +86,15 @@
     let unlistenFileOpen: UnlistenFn | null = null;
     onMount(async () => {
         // REQ-003 CLI argument
-        filepath = await invoke<string | null>("get_cli_filename");
-        if (filepath) {
-          console.log("SMTEST: file loaded");
-          await handleFileChange(filepath);
+        filename = await invoke<string | null>("get_cli_filename");
+        if (filename) {
+            await handleFileChange(filename);
         } else {
-        // REQ-006 set default Application Name
-          await getCurrentWindow().setTitle(
-              (await getName()) +
-                  `: ${getDisplayShortcutFileOpen()} to open a file`
-          );
+            // REQ-006 set default Application Name
+            await getCurrentWindow().setTitle(
+                (await getName()) +
+                    `: ${getDisplayShortcutFileOpen()} to open a file`
+            );
         }
 
         // REQ-004 Implementation: register onDragDropEvent clean up on destroy
@@ -130,7 +129,7 @@
     <h1>TauriCSVExplorer</h1>
     <button type="button" onclick={openFileDialog}>Open File</button>
 
-    <p>Absolute filename: {filepath}</p>
+    <p>Absolute filename: {filename}</p>
 
     {#if error}
         <div class="error-box">
